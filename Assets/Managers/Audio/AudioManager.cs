@@ -1,85 +1,112 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : Singletons<AudioManager>
 {
-    [System.Serializable]
-    public class AudioChannelSettings
+    [Header("Lista de sonidos disponibles (asignar en el inspector)")]
+    public List<SoundData> sounds = new List<SoundData>();
+
+    private Dictionary<string, AudioSource> activeSounds = new Dictionary<string, AudioSource>();
+
+    [Header("Mixer principal de Audio (Opcional)")]
+    public AudioMixerGroup defaultMixer;
+
+    /// <summary>
+    /// Reproduce un sonido por su nombre.
+    /// </summary>
+    public void Play(string soundName, Vector3? position = null)
     {
-        public AudioChannel channel;
-        [Range(0f, 1f)] public float volume = 1f;
-    }
-
-    [SerializeField] private List<AudioChannelSettings> channelSettings;
-    private Dictionary<AudioChannel, float> channelVolumes = new();
-
-    private AudioSource musicSource;
-
-    private void Awake()
-    {
-        foreach (var setting in channelSettings)
-            channelVolumes[setting.channel] = setting.volume;
-    }
-
-    public void PlayOneShot(SoundData sound, Vector3? position = null)
-    {
-        if (sound == null || sound.clip == null) return;
-
-        GameObject tempGO = new GameObject($"TempAudio_{sound.clip.name}");
-        tempGO.transform.position = position ?? Vector3.zero;
-
-        AudioSource source = tempGO.AddComponent<AudioSource>();
-        source.clip = sound.clip;
-        source.volume = sound.volume * channelVolumes[sound.channel];
-        source.loop = false;
-
-        if (sound.spatial || position.HasValue)
+        if (activeSounds.ContainsKey(soundName))
         {
-            source.spatialBlend = 1f;
-            source.minDistance = sound.minDistance;
-            source.maxDistance = sound.maxDistance;
-            source.rolloffMode = sound.rolloffMode;
+            Debug.LogWarning($"El sonido '{soundName}' ya está reproduciéndose.");
+            return;
+        }
+
+        SoundData data = sounds.Find(s => s.soundName == soundName);
+        if (data == null)
+        {
+            Debug.LogError($"No se encontró el sonido con nombre: {soundName}");
+            return;
+        }
+
+        GameObject go = new GameObject($"Audio_{data.soundName}");
+        go.transform.SetParent(this.transform);
+
+        // Si se pasa una posición → poner el sonido en el mundo
+        if (position.HasValue)
+            go.transform.position = position.Value;
+
+        AudioSource source = go.AddComponent<AudioSource>();
+        source.clip = data.clip;
+        source.volume = data.volume;
+        source.pitch = data.pitch;
+        source.loop = data.loop;
+        source.spatialBlend = data.spatialBlend; // 👈 aquí se configura si es 2D o 3D
+        if (defaultMixer != null) source.outputAudioMixerGroup = defaultMixer;
+
+        source.Play();
+
+        if (!data.loop)
+        {
+            Destroy(go, data.clip.length);
         }
         else
         {
-            source.spatialBlend = 0f;
+            activeSounds[soundName] = source;
         }
-
-        source.Play();
-        Destroy(tempGO, sound.clip.length);
     }
 
-    public void PlayMusic(AudioClip clip, bool loop = true)
+    /// <summary>
+    /// Detiene un sonido en reproducción.
+    /// </summary>
+    public void Stop(string soundName)
     {
-        if (clip == null) return;
+        if (!activeSounds.ContainsKey(soundName)) return;
 
-        var music = GetOrCreateMusicSource();
-        music.clip = clip;
-        music.loop = loop;
-        music.volume = channelVolumes[AudioChannel.Music];
-        music.spatialBlend = 0f; 
-        music.Play();
+        AudioSource source = activeSounds[soundName];
+        Destroy(source.gameObject);
+        activeSounds.Remove(soundName);
     }
 
-    private AudioSource GetOrCreateMusicSource()
+    /// <summary>
+    /// Reproduce música (solo una a la vez).
+    /// </summary>
+    public void PlayMusic(string soundName)
     {
-        if (musicSource == null)
+        // Si ya hay música, detenerla
+        List<string> toStop = new List<string>();
+        foreach (var kvp in activeSounds)
         {
-            var go = new GameObject("MusicSource");
-            go.transform.SetParent(transform);
-            musicSource = go.AddComponent<AudioSource>();
-            DontDestroyOnLoad(go);
+            if (kvp.Value.loop) toStop.Add(kvp.Key);
         }
-        return musicSource;
+        foreach (var s in toStop) Stop(s);
+
+        Play(soundName);
     }
 
-    public void SetChannelVolume(AudioChannel channel, float volume)
+    /// <summary>
+    /// Reproduce un efecto de sonido en el mundo (3D) o en el centro (2D).
+    /// </summary>
+    public void PlaySFX(string soundName, Vector3? position = null)
     {
-        channelVolumes[channel] = Mathf.Clamp01(volume);
-        if (channel == AudioChannel.Music && musicSource != null)
-            musicSource.volume = channelVolumes[channel];
-    }
+        SoundData data = sounds.Find(s => s.soundName == soundName);
+        if (data == null)
+        {
+            Debug.LogError($"No se encontró el SFX: {soundName}");
+            return;
+        }
 
-    public float GetChannelVolume(AudioChannel channel) =>
-        channelVolumes.ContainsKey(channel) ? channelVolumes[channel] : 1f;
+        if (data.spatialBlend == 0f)
+        {
+            // 2D: reproducir sin posición
+            AudioSource.PlayClipAtPoint(data.clip, Vector3.zero, data.volume);
+        }
+        else
+        {
+            // 3D: reproducir en posición
+            Vector3 pos = position ?? Vector3.zero;
+            AudioSource.PlayClipAtPoint(data.clip, pos, data.volume);
+        }
+    }
 }

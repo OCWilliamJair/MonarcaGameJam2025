@@ -3,16 +3,21 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Audio/SoundData")]
 public class SoundData : ScriptableObject
 {
-    [Header("Clip")]
+    [Header("Identificador único del sonido")]
+    public string soundName;
+
+    [Header("Clip de audio")]
     public AudioClip clip;
-    public AudioChannel channel = AudioChannel.SFX;
 
-    [Header("General Settings")]
-    [Range(0f,1f)] public float volume = 1f;
-    public bool spatial = false;
+    [Header("Configuraciones")]
+    [Range(0f, 1f)] public float volume = 1f;
+    [Range(-3f, 3f)] public float pitch = 1f;
+    public bool loop = false;
 
-    [Header("3D Settings (si spatial = true)")]
-    public float minDistance = 1f;
-    public float maxDistance = 15f;
-    public AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic;
+    [Header("Espacialización")]
+    [Tooltip("0 = 2D, 1 = 3D")]
+    [Range(0f, 1f)] public float spatialBlend = 0f;
+
+    [Header("Categoría (ej. Música, SFX, UI)")]
+    public string category = "SFX";
 }
