@@ -19,14 +19,16 @@ public class Bed : InteractableBase
         PlayerActionBlocker.Instance.BlockAll();
     }
     private void OnEnable()
-    {      
-        player.actions["Cancel"].started += OnCancelPerformed;
+    {
+        if (player != null)
+            player.actions["Cancel"].started += OnCancelPerformed;
     }
 
    
     private void OnDisable()
     {
-        player.actions["Cancel"].started -= OnCancelPerformed;
+        if(player != null)
+            player.actions["Cancel"].started -= OnCancelPerformed;
     }
     private void OnCancelPerformed(InputAction.CallbackContext ctx)
     {

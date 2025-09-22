@@ -53,48 +53,30 @@ public class CameraManager : MonoBehaviour
 
     #region Cambio de cámara
 
-    public async UniTask SwitchCamera(string camName, bool saveLast = true, float blendTime = -1f)
+    public void SwitchCamera(string camName, bool saveLast = true, float blendTime = -1f)
     {
         if (!camDictionary.ContainsKey(camName)) return;
-        await SwitchCamera(camDictionary[camName], saveLast, blendTime);
+        SwitchCamera(camDictionary[camName], saveLast, blendTime);
     }
 
-    public async UniTask SwitchCamera(CinemachineCamera newCam, bool saveLast = true, float blendTime = -1f)
+    public void  SwitchCamera(CinemachineCamera newCam, bool saveLast = true, float blendTime = 1f)
     {
         if (newCam == null || newCam == currentCam) return;
 
         if (saveLast)
             lastCam = currentCam;
 
-        blendTime = blendTime < 0 ? defaultBlendDuration : blendTime;
-
-        // Bloquea todas las acciones del jugador
-        PlayerActionBlocker.Instance.BlockAll();
+        brain.DefaultBlend.Time = blendTime;
 
         // Prioridades para forzar blend
         newCam.Priority = 20;
         currentCam.Priority = 10;
-
-        // Espera el blend de Cinemachine o fallback por tiempo
-        if (brain != null)
-        {
-            await UniTask.WhenAny(
-                UniTask.Delay(TimeSpan.FromSeconds(blendTime)),
-                UniTask.WaitUntil(() => brain.ActiveBlend == null)
-            );
-        }
-        else
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(blendTime));
-        }
 
         // Ajusta prioridades finales
         currentCam.Priority = 0;
         newCam.Priority = 10;
         currentCam = newCam;
 
-        // Desbloquea las acciones
-        PlayerActionBlocker.Instance.UnblockAll();
     }
 
     public async UniTask SwitchCameraTemporarily(string camName, float duration, float blendTime = -1f)
@@ -113,32 +95,32 @@ public class CameraManager : MonoBehaviour
         PlayerActionBlocker.Instance.BlockAll();
 
         // Cambia a la nueva cámara
-        await SwitchCamera(newCam, saveLast: true, blendTime);
+        SwitchCamera(newCam, saveLast: true, blendTime);
 
         // Espera toda la duración de la cámara temporal
         await UniTask.Delay(TimeSpan.FromSeconds(duration));
 
         // Vuelve a la cámara anterior
-        await SwitchCamera(previousCam, saveLast: false, blendTime);
+        SwitchCamera(previousCam, saveLast: false, blendTime);
     }
 
-    public async UniTask ReturnToLastCamera(float blendTime = -1f)
+    public void ReturnToLastCamera(float blendTime = -1f)
     {
         if (lastCam != null && lastCam != currentCam)
-            await SwitchCamera(lastCam, saveLast: false, blendTime);
+           SwitchCamera(lastCam, saveLast: false, blendTime);
     }
 
-    public async UniTask SetPermanentCamera(string camName, float blendTime = -1f)
+    public void SetPermanentCamera(string camName, float blendTime = -1f)
     {
         if (!camDictionary.ContainsKey(camName)) return;
-        await SetPermanentCamera(camDictionary[camName], blendTime);
+        SetPermanentCamera(camDictionary[camName], blendTime);
     }
 
-    public async UniTask SetPermanentCamera(CinemachineCamera newCam, float blendTime = -1f)
+    public void SetPermanentCamera(CinemachineCamera newCam, float blendTime = -1f)
     {
         if (newCam == null) return;
         lastCam = null;
-        await SwitchCamera(newCam, saveLast: false, blendTime);
+        SwitchCamera(newCam, saveLast: false, blendTime);
     }
 
     #endregion

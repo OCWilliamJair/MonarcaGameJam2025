@@ -3,7 +3,8 @@ using UnityEngine.InputSystem;
 using static PlayerActionBlocker;
 public class PlayerInteraction : MonoBehaviour
 {
-    public Transform cameraHolder;
+    [Header("Raycast Settings")]
+    public Camera playerCamera;             
     public float interactionDistance = 3f;
     public LayerMask interactableLayer;
 
@@ -26,7 +27,7 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext ctx)
-    {       
+    {
         if (currentFocus != null)
         {
             currentFocus.Interact();
@@ -38,8 +39,12 @@ public class PlayerInteraction : MonoBehaviour
         if (PlayerActionBlocker.Instance != null && PlayerActionBlocker.Instance.IsBlocked(PlayerAction.Interact))
             return;
 
-        // Raycast para detectar objeto interactuable
-        Ray ray = new Ray(cameraHolder.position, cameraHolder.forward);
+        if (playerCamera == null) return;
+
+        // Raycast desde el centro de la pantalla
+        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.green); // Para debug en editor
+
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactableLayer))
         {
             InteractableBase interactable = hit.collider.GetComponent<InteractableBase>();

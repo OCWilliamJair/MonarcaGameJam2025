@@ -49,11 +49,13 @@ public class PlayerActionBlocker : MonoBehaviour
     {
         foreach (PlayerAction action in System.Enum.GetValues(typeof(PlayerAction)))
             blockedActions.Add(action);
+        Debug.Log("Todas las acciones bloqueadas");
     }
 
     /// <summary>Desbloquea todas las acciones</summary>
     public void UnblockAll()
     {
         blockedActions.Clear();
+        Debug.Log("Todas las acciones desbloqueadas");
     }
 }

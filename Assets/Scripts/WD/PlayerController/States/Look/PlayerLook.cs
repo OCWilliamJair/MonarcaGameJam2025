@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static PlayerActionBlocker;
 
-public class PlayerLookFPS_Terror_Normalized : MonoBehaviour
+public class PlayerLookFPS : MonoBehaviour
 {
     [Header("Sensibilidad")]
     public float mouseSensitivity = 2.5f;
@@ -74,8 +74,7 @@ public class PlayerLookFPS_Terror_Normalized : MonoBehaviour
             return;
 
         HandleLook();
-        HandleHeadBob();
-        HandleIdleSway();
+        HandleHeadBobAndSway();
     }
 
     private void HandleLook()
@@ -88,12 +87,10 @@ public class PlayerLookFPS_Terror_Normalized : MonoBehaviour
 
         if (isMouse)
         {
-            // Mouse ? usar input tal cual
             delta *= mouseSensitivity;
         }
         else if (isGamepad)
         {
-            // Gamepad ? normalizar y multiplicar sensibilidad
             if (delta.sqrMagnitude > 1f) delta.Normalize();
             delta *= stickSensitivity * Time.deltaTime;
         }
@@ -117,31 +114,42 @@ public class PlayerLookFPS_Terror_Normalized : MonoBehaviour
         playerBody.Rotate(Vector3.up * mouseX);
     }
 
-    private void HandleHeadBob()
+    private void HandleHeadBobAndSway()
     {
         if (playerCamera == null) return;
 
+        // Base position y rotación
+        Vector3 basePos = initialCamPos;
+        Quaternion baseRot = Quaternion.Euler(xRotation, 0f, 0f);
+
         CharacterController cc = GetComponent<CharacterController>();
-        if (cc != null && cc.velocity.magnitude > 0.1f)
+        bool isMoving = cc != null && cc.velocity.magnitude > 0.1f;
+        bool isLooking = lookInput.magnitude > 0.01f;
+
+        // --- Head Bob ---
+        Vector3 bobOffset = Vector3.zero;
+        if (isMoving)
         {
             bobTimer += Time.deltaTime * bobFrequency;
-            Vector3 bobOffset = new Vector3(0f, Mathf.Sin(bobTimer) * bobAmplitude, 0f);
-            playerCamera.localPosition = initialCamPos + bobOffset;
+            bobOffset = new Vector3(0f, Mathf.Sin(bobTimer) * bobAmplitude, 0f);
         }
         else
         {
             bobTimer = 0f;
-            playerCamera.localPosition = Vector3.Lerp(playerCamera.localPosition, initialCamPos, Time.deltaTime * 5f);
         }
-    }
 
-    private void HandleIdleSway()
-    {
-        if (playerCamera == null) return;
+        // --- Idle Sway ---
+        Vector3 swayEuler = Vector3.zero;
+        if (!isMoving && !isLooking)
+        {
+            float swayX = (Mathf.PerlinNoise(Time.time * swaySpeed, 0f) - 0.5f) * swayAmount;
+            float swayY = (Mathf.PerlinNoise(0f, Time.time * swaySpeed) - 0.5f) * swayAmount;
+            swayEuler = new Vector3(swayY, swayX, 0f);
+        }
 
-        float swayX = (Mathf.PerlinNoise(Time.time * swaySpeed, 0f) - 0.5f) * swayAmount;
-        float swayY = (Mathf.PerlinNoise(0f, Time.time * swaySpeed) - 0.5f) * swayAmount;
-
-        playerCamera.localRotation *= Quaternion.Euler(swayY, swayX, 0f);
+        // --- Aplicar posición y rotación ---
+        playerCamera.localPosition = Vector3.Lerp(playerCamera.localPosition, basePos + bobOffset, Time.deltaTime * 8f);
+        Quaternion swayRotation = Quaternion.Euler(swayEuler);
+        playerCamera.localRotation = Quaternion.Slerp(playerCamera.localRotation, baseRot * swayRotation, Time.deltaTime * 8f);
     }
 }
