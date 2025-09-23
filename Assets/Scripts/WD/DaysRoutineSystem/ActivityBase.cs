@@ -10,9 +10,16 @@ public class DayEvent
 
 public abstract class ActivityBase : InteractableBase
 {
+    [SerializeField] public string activityDescription;
+
     [Header("Configuración de días")]
-    public bool canInteracte = false;
     [SerializeField] protected DayEvent[] dayEvents;
+
+
+    [Header("events")]
+
+    [SerializeField] public UnityEvent OnStartActivity;
+    [SerializeField] public UnityEvent OnCompleteActivity;
 
     protected override void Awake()
     {
@@ -22,19 +29,23 @@ public abstract class ActivityBase : InteractableBase
 
     public virtual void StartActivity()
     {
-        canInteracte = true;
+        SetInteract(true);
+        OnStartActivity.Invoke();
     }
 
     public override void Interact()
     {
-        if (!canInteracte) return;
-        canInteracte = false;              
+        if (!canInteract) return;
+        SetInteract(false);
+        ActivityProcess();
     }
 
+    public virtual void ActivityProcess(){}
     public virtual void CompleteActivity()
     {
         int currentDay = DayManager.Instance.currentDay;
         ChooseDayEvent(currentDay);
+        OnCompleteActivity.Invoke();
     }
 
     /// <summary>
@@ -55,6 +66,6 @@ public abstract class ActivityBase : InteractableBase
 
     protected virtual void RestartValues()
     {
-        canInteracte = false;       
+        SetInteract(false);
     }
 }

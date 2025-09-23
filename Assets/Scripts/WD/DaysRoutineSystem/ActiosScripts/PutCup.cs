@@ -10,10 +10,8 @@ public class PutCup : ActivityBase
 
     [SerializeField] private GameObject coffeModel;
 
-    public override void Interact()
+    public override void ActivityProcess()
     {
-        if(!canInteracte) return;
-        base.Interact();
         ServingCoffee().Forget();
     }
 
@@ -21,6 +19,7 @@ public class PutCup : ActivityBase
     {
         base.RestartValues();
         modelCup.SetActive(false);
+        coffeModel.SetActive(false);
     }
 
     async UniTask ServingCoffee()

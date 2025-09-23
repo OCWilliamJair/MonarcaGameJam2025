@@ -8,8 +8,6 @@ public class ObserveObject : InteractableBase
 
     [SerializeField] CinemachineCamera _camera;
 
-    [SerializeField] DialogueData _dialogueData;
-
     private bool isActive = false;
 
     public override void Interact()
@@ -19,7 +17,6 @@ public class ObserveObject : InteractableBase
         Debug.Log("Interactuando");
         CameraManager.Instance.SwitchCamera(_camera, true, 0.5f);
         PlayerActionBlocker.Instance.BlockAll();     
-        DialogueManager.Instance.StartDialogue(_dialogueData);
     }
 
     private void OnEnable()

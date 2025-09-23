@@ -37,11 +37,12 @@ public class DialogueManager : MonoBehaviour
             playerInput.actions["Next"].performed -= OnNext;
     }
 
-    public async void StartDialogue(DialogueData dialogue)
+    public async void StartDialogue(DialogueData dialogue, bool blockAcionsValue)
     {
         if (isPlaying) return;
 
-        PlayerActionBlocker.Instance.BlockAll();
+        if(blockAcionsValue) PlayerActionBlocker.Instance.BlockAll();
+
         currentDialogue = dialogue;
         currentLineIndex = 0;
         isPlaying = true;

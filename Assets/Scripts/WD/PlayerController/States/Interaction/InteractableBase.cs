@@ -6,6 +6,7 @@ public abstract class InteractableBase : MonoBehaviour
     public Renderer targetRenderer;
     private Material originalMaterial;
     public Material highlightMaterial;
+    public bool canInteract = true;
 
     protected virtual void Awake()
     {
@@ -16,7 +17,7 @@ public abstract class InteractableBase : MonoBehaviour
     // Se llama cuando el jugador mira el objeto
     public virtual void OnFocus()
     {
-        if (targetRenderer != null && highlightMaterial != null)
+        if (targetRenderer != null && highlightMaterial != null && canInteract)
             targetRenderer.material = highlightMaterial;
     }
 
@@ -29,4 +30,9 @@ public abstract class InteractableBase : MonoBehaviour
 
     // Se llama al presionar el botón de interacción
     public abstract void Interact();
+
+    public void SetInteract(bool value)
+    {
+        canInteract = value;
+    }
 }

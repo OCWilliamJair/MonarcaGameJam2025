@@ -1,16 +1,59 @@
+using Cysharp.Threading.Tasks;
+using Unity.Cinemachine;
 using UnityEngine;
 
-public class DrinkCoffee : MonoBehaviour
+public class DrinkCoffee : ActivityBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private CinemachineCamera _camera;
+
+    [SerializeField] private SoundData _sound;
+
+    [SerializeField] private GameObject _cupModel;
+    public override void ActivityProcess()
     {
-        
+        DrinkCoffeeRoutine().Forget();
     }
 
-    // Update is called once per frame
-    void Update()
+    async UniTask DrinkCoffeeRoutine()
     {
-        
+        if (_camera == null) return;
+
+        // Cambiar a la cámara de beber café
+        CameraManager.Instance.SwitchCamera(_camera, true, 0.5f);
+        PlayerActionBlocker.Instance.BlockAll();
+
+        _cupModel.SetActive(true);
+        // Guardar estado inicial
+        Transform camTransform = _camera.transform;
+        Quaternion initialRot = camTransform.localRotation;
+
+        // Reproducir sonido
+        AudioManager.Instance.Play(_sound.name);
+
+        // Simulación de beber café
+        float duration = 2.5f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t = elapsed / duration;
+
+            
+            float tilt = Mathf.Sin(t * Mathf.PI);
+            camTransform.localRotation = initialRot *
+                                         Quaternion.Euler(-15f * tilt, 0f, 2f * Mathf.Sin(t * 6f));
+
+            await UniTask.Yield();
+        }
+
+        // Restaurar rotación
+        camTransform.localRotation = initialRot;
+
+        // Regresar a la cámara de gameplay (asumiendo que tienes una principal configurada)
+        CameraManager.Instance.ReturnToLastCamera(0.5f);
+        _cupModel.SetActive(false);
+        PlayerActionBlocker.Instance.UnblockAll();
     }
 }

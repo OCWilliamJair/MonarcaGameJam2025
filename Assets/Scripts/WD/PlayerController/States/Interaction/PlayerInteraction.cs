@@ -28,7 +28,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnInteractPerformed(InputAction.CallbackContext ctx)
     {
-        if (currentFocus != null)
+        if (currentFocus != null && currentFocus.canInteract)
         {
             currentFocus.Interact();
         }

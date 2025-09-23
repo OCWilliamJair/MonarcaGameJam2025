@@ -1,16 +1,27 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class WashCup : MonoBehaviour
+public class WashCup : ActivityBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private GameObject modelCup;
+
+    [SerializeField] private SoundData soundWash;
+    [SerializeField] private SoundData soundTakeCup;
+
+    public override void ActivityProcess()
     {
-        
+        WashCupRoutine().Forget();
     }
 
-    // Update is called once per frame
-    void Update()
+    async UniTask WashCupRoutine()
     {
-        
+        modelCup.SetActive(true);
+        PlayerActionBlocker.Instance.BlockAction(PlayerActionBlocker.PlayerAction.Move);
+        AudioManager.Instance.Play(soundWash.name, modelCup.transform.position);
+        await UniTask.Delay(5000);
+        AudioManager.Instance.Play(soundTakeCup.name);
+        modelCup.SetActive(false);
+        PlayerActionBlocker.Instance.UnblockAction(PlayerActionBlocker.PlayerAction.Move);
+        CompleteActivity();
     }
 }
