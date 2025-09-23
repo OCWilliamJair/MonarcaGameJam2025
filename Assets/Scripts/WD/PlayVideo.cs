@@ -18,6 +18,7 @@ public class PlayVideo : MonoBehaviour
     }
     async UniTask PlayTemporalVideo()
     {
+        if(_video == null) return;
         _videoPlayer.Play();
         await UniTask.Delay(timeToOffVideo);
     }

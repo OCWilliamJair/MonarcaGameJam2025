@@ -7,7 +7,7 @@ public abstract class InteractableBase : MonoBehaviour
     private Material originalMaterial;
     public Material highlightMaterial;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (targetRenderer != null)
             originalMaterial = targetRenderer.material;
