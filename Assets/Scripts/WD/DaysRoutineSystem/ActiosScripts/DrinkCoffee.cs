@@ -8,7 +8,9 @@ public class DrinkCoffee : ActivityBase
 
     [SerializeField] private SoundData _sound;
 
-    [SerializeField] private GameObject _cupModel;
+    [SerializeField] private GameObject _cupModelToDrink;
+
+    [SerializeField] private GameObject _cupModelToTake;
     public override void ActivityProcess()
     {
         DrinkCoffeeRoutine().Forget();
@@ -22,7 +24,7 @@ public class DrinkCoffee : ActivityBase
         CameraManager.Instance.SwitchCamera(_camera, true, 0.5f);
         PlayerActionBlocker.Instance.BlockAll();
 
-        _cupModel.SetActive(true);
+        _cupModelToDrink.SetActive(true);       
         // Guardar estado inicial
         Transform camTransform = _camera.transform;
         Quaternion initialRot = camTransform.localRotation;
@@ -53,7 +55,9 @@ public class DrinkCoffee : ActivityBase
 
         // Regresar a la cámara de gameplay (asumiendo que tienes una principal configurada)
         CameraManager.Instance.ReturnToLastCamera(0.5f);
-        _cupModel.SetActive(false);
+        _cupModelToDrink.SetActive(false);
         PlayerActionBlocker.Instance.UnblockAll();
+        _cupModelToTake.SetActive(false);
+        CompleteActivity();
     }
 }
