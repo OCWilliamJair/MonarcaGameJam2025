@@ -13,5 +13,4 @@ public class TakeCup : ActivityBase
         base.RestartValues();
         gameObject.SetActive(true);
     }
-
 }
