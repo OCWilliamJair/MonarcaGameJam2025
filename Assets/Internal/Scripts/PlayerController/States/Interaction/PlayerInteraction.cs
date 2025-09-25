@@ -31,6 +31,7 @@ public class PlayerInteraction : MonoBehaviour
         if (currentFocus != null && currentFocus.canInteract)
         {
             currentFocus.Interact();
+            ClearFocus();
         }
     }
 
