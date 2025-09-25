@@ -3,46 +3,35 @@ using UnityEngine;
 
 public class PlayerBlink : MonoBehaviour
 {
-    [Header("Eyelid Settings")]
-    public RectTransform upperEyelid;
-    public RectTransform lowerEyelid;
-    public float blinkDuration = 0.1f;
-    public int blinkCount = 1;
-    public float closedOffset = 0f; // cuánto se desplazan los párpados para cerrar completamente
+    public Material blinkMaterial;
 
-    private Vector2 upperStartPos;
-    private Vector2 lowerStartPos;
+    [Header("Duraciones")]
+    public float closeTime = 0.15f;
+    public float stayClosedTime = 0.05f;
+    public float openTime = 0.2f;
 
-    private void Awake()
+    private void Start()
     {
-        upperStartPos = upperEyelid.anchoredPosition;
-        lowerStartPos = lowerEyelid.anchoredPosition;
-    }
-
-    void Start()
-    {
-        InvokeRepeating(nameof(Blink), Random.Range(3f, 6f), Random.Range(5f, 10f));
+        blinkMaterial.SetFloat("_Blink", 0f);
     }
 
     public void Blink()
     {
-        Sequence blinkSequence = DOTween.Sequence();
+        Sequence seq = DOTween.Sequence();
 
-        for (int i = 0; i < blinkCount; i++)
-        {
-            // Subir y bajar párpados para cerrar el ojo
-            blinkSequence.Append(
-                DOTween.Sequence()
-                .Join(upperEyelid.DOAnchorPosY(closedOffset, blinkDuration))
-                .Join(lowerEyelid.DOAnchorPosY(-closedOffset, blinkDuration))
-            );
+        // Cierre
+        seq.Append(DOTween.To(
+            () => blinkMaterial.GetFloat("_Blink"),
+            x => blinkMaterial.SetFloat("_Blink", x),
+            1f, closeTime));
 
-            // Volver a abrir
-            blinkSequence.Append(
-                DOTween.Sequence()
-                .Join(upperEyelid.DOAnchorPosY(upperStartPos.y, blinkDuration))
-                .Join(lowerEyelid.DOAnchorPosY(lowerStartPos.y, blinkDuration))
-            );
-        }
+        // Tiempo cerrado
+        seq.AppendInterval(stayClosedTime);
+
+        // Apertura
+        seq.Append(DOTween.To(
+            () => blinkMaterial.GetFloat("_Blink"),
+            x => blinkMaterial.SetFloat("_Blink", x),
+            0f, openTime));
     }
 }

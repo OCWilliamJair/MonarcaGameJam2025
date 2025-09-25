@@ -15,6 +15,9 @@ public class CameraManager : MonoBehaviour
     private CinemachineCamera lastCam;
     private Dictionary<string, CinemachineCamera> camDictionary;
 
+    [Header("Player Camera")]
+    public CinemachineCamera playerCamera;
+
     [Header("Blend Settings")]
     public float defaultBlendDuration = 1f;
 
@@ -121,6 +124,17 @@ public class CameraManager : MonoBehaviour
         if (newCam == null) return;
         lastCam = null;
         SwitchCamera(newCam, saveLast: false, blendTime);
+    }
+
+    public void SwitchToPlayerCamera(float blendTime = -1f)
+    {
+        if (playerCamera == null)
+        {
+            Debug.LogWarning("CameraManager: No se asignó una cámara de Player en el inspector.");
+            return;
+        }
+
+        SwitchCamera(playerCamera, saveLast: false, blendTime);
     }
 
     #endregion
