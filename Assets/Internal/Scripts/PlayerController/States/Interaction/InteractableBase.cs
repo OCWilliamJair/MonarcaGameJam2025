@@ -2,33 +2,47 @@ using UnityEngine;
 
 public abstract class InteractableBase : MonoBehaviour
 {
-    [Header("Opcional: material o outline para resaltar")]
+    [Header("Opcional: material u outline para resaltar")]
     public Renderer targetRenderer;
-    private Material originalMaterial;
-    public Material highlightMaterial;
+    private Material[] originalMaterials; 
+    public Material outlineMaterial;      
     public bool canInteract = true;
 
     protected virtual void Awake()
     {
         if (targetRenderer != null)
-            originalMaterial = targetRenderer.material;
+            originalMaterials = targetRenderer.materials; 
     }
 
-    // Se llama cuando el jugador mira el objeto
     public virtual void OnFocus()
     {
-        if (targetRenderer != null && highlightMaterial != null && canInteract)
-            targetRenderer.material = highlightMaterial;
+        if (targetRenderer != null && outlineMaterial != null && canInteract)
+        {
+            var currentMats = targetRenderer.materials;
+            foreach (var m in currentMats)
+            {
+                if (m == outlineMaterial)
+                    return;
+            }
+
+            Material[] mats = new Material[currentMats.Length + 1];
+            for (int i = 0; i < currentMats.Length; i++)
+                mats[i] = currentMats[i];
+
+            mats[mats.Length - 1] = outlineMaterial;
+
+            targetRenderer.materials = mats;
+        }
     }
 
-    // Se llama cuando el jugador deja de mirar el objeto
     public virtual void OnLoseFocus()
     {
-        if (targetRenderer != null && originalMaterial != null)
-            targetRenderer.material = originalMaterial;
+        if (targetRenderer != null && originalMaterials != null)
+        {
+            targetRenderer.materials = originalMaterials;
+        }
     }
 
-    // Se llama al presionar el botón de interacción
     public abstract void Interact();
 
     public void SetInteract(bool value)

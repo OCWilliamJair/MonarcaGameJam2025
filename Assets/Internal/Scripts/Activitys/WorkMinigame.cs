@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+
 [System.Serializable]
 public class EmailData
 {
@@ -32,8 +33,7 @@ public class WorkMinigame : ActivityBase
     public int maxErrors = 3;
     public float timePerEmail = 3f;
 
-    [SerializeField]
-    private PlayerInput playerInput;
+    [SerializeField] private PlayerInput playerInput;
     private InputAction approveAction;
     private InputAction rejectAction;
     private InputAction skipInterfaces;
@@ -41,6 +41,7 @@ public class WorkMinigame : ActivityBase
     private int currentEmailIndex = 0;
     private int errors = 0;
     private bool emailProcessed = false;
+    private bool gameIsStarted = false;
 
     [Header("Animation Settings")]
     public float feedbackScaleDuration = 0.15f;
@@ -52,13 +53,34 @@ public class WorkMinigame : ActivityBase
     protected override void Awake()
     {
         base.Awake();
+        if (playerInput == null)
+            playerInput = GetComponent<PlayerInput>();
+
+        if (playerInput == null)
+        {
+            Debug.LogError("WorkMinigame: playerInput no asignado ni encontrado en GetComponent<PlayerInput>()");
+            return;
+        }
+
         approveAction = playerInput.actions["Approve"];
         rejectAction = playerInput.actions["Cancel"];
-
-        approveAction.performed += ctx => Choose("Importante");
-        rejectAction.performed += ctx => Choose("Spam");
         skipInterfaces = playerInput.actions["Next"];
     }
+
+    private void OnEnable()
+    {
+        if (approveAction != null) approveAction.performed += OnApprove;
+        if (rejectAction != null) rejectAction.performed += OnReject;
+    }
+
+    private void OnDisable()
+    {
+        if (approveAction != null) approveAction.performed -= OnApprove;
+        if (rejectAction != null) rejectAction.performed -= OnReject;
+    }
+
+    private void OnApprove(InputAction.CallbackContext ctx) => Choose("Importante");
+    private void OnReject(InputAction.CallbackContext ctx) => Choose("Spam");
 
     protected override void RestartValues()
     {
@@ -78,12 +100,13 @@ public class WorkMinigame : ActivityBase
     }
 
     private async UniTask RunGame()
-    {        
+    {
         CameraManager.Instance.SwitchCamera(_camera, true, 0.5f);
         PlayerActionBlocker.Instance.BlockAll();
         await UniTask.Delay(2000);
         MainCanvas.SetActive(true);
         tutorialContainer.SetActive(true);
+        gameIsStarted = true;
         await UniTask.WaitUntil(() => skipInterfaces.triggered);
         tutorialContainer.SetActive(false);
         await UniTask.Delay(1000);
@@ -116,9 +139,12 @@ public class WorkMinigame : ActivityBase
                     feedbackText.DOKill();
                     emailDisplay.transform.DOKill();
 
-                    feedbackText.text = "Tiempo agotado ?";
+                    feedbackText.text = "? Tiempo agotado";
                     ShowFeedbackAnimation(feedbackText, Color.red);
-                    emailDisplay.transform.DOShakePosition(emailShakeDuration, 15f, 10, 90f);
+
+                    // En World Space queda mejor con punch en escala
+                    emailDisplay.transform.DOPunchScale(Vector3.one * 0.15f, emailShakeDuration, 6, 0.7f);
+
                     errors++;
                     scoreText.text = $"Errores: {errors}/{maxErrors}";
                 }
@@ -133,8 +159,10 @@ public class WorkMinigame : ActivityBase
                 retryCanvas.SetActive(true);
 
                 feedbackText.DOKill();
-                feedbackText.text = "Has perdido ?";
+                feedbackText.text = "? Has perdido";
                 ShowFeedbackAnimation(feedbackText, Color.red);
+
+                await UniTask.Delay(1500); // dar un respiro antes de esperar input
 
                 // Espera a que presione Next para reiniciar
                 await UniTask.WaitUntil(() => skipInterfaces.triggered);
@@ -149,10 +177,11 @@ public class WorkMinigame : ActivityBase
                 WorkingComplete.SetActive(false);
                 gameCompleted = true;
                 RestartGameValues();
-                MainCanvas.SetActive(false);                
+                MainCanvas.SetActive(false);
                 CameraManager.Instance.ReturnToLastCamera(0.5f);
                 await UniTask.Delay(500);
                 PlayerActionBlocker.Instance.UnblockAll();
+                gameIsStarted = false;
                 CompleteActivity();
             }
         }
@@ -165,7 +194,7 @@ public class WorkMinigame : ActivityBase
         errors = 0;
         emailProcessed = false;
         feedbackText.text = "";
-        scoreText.text = $"Errores: {errors}/{maxErrors}";       
+        scoreText.text = $"Errores: {errors}/{maxErrors}";
     }
 
     private void ShowEmail(int index)
@@ -181,7 +210,7 @@ public class WorkMinigame : ActivityBase
 
     private void Choose(string choice)
     {
-        if (emailProcessed) return;
+        if (emailProcessed || !gameIsStarted) return;
 
         emailProcessed = true;
         string correct = emails[currentEmailIndex].correctLabel;
@@ -192,18 +221,18 @@ public class WorkMinigame : ActivityBase
 
         if (choice == correct)
         {
-            feedbackText.text = "Correcto ?";
+            feedbackText.text = "? Correcto";
             ShowFeedbackAnimation(feedbackText, Color.green);
         }
         else
         {
-            feedbackText.text = "Incorrecto ?";
+            feedbackText.text = "? Incorrecto";
             errors++;
             scoreText.text = $"Errores: {errors}/{maxErrors}";
             ShowFeedbackAnimation(feedbackText, Color.red);
 
-            // Shake de la imagen del correo
-            emailDisplay.transform.DOShakePosition(emailShakeDuration, 15f, 10, 90f);
+            // Punch en World Space para el correo
+            emailDisplay.transform.DOPunchScale(Vector3.one * 0.15f, emailShakeDuration, 6, 0.7f);
             ShowScorePopAnimation();
         }
     }
@@ -211,12 +240,14 @@ public class WorkMinigame : ActivityBase
     private void ShowFeedbackAnimation(TextMeshProUGUI text, Color color)
     {
         text.color = color;
-        text.alpha = 1f;
-        text.transform.localScale = Vector3.zero;
+        text.alpha = 0f;
+        text.transform.localScale = Vector3.one * 0.001f; // escala inicial pequeña en World Space
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(text.transform.DOScale(1f, feedbackScaleDuration).SetEase(Ease.OutBack));
-        seq.Append(text.DOFade(0f, feedbackFadeDuration).SetDelay(0.3f));
+        seq.Append(text.DOFade(1f, 0.1f));
+        seq.Join(text.transform.DOScale(Vector3.one * 0.002f, feedbackScaleDuration).SetEase(Ease.OutBack));
+        seq.AppendInterval(0.5f);
+        seq.Append(text.DOFade(0f, feedbackFadeDuration));
     }
 
     private void ShowScorePopAnimation()

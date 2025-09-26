@@ -55,9 +55,10 @@ public class DrinkCoffee : ActivityBase
 
         // Regresar a la cámara de gameplay (asumiendo que tienes una principal configurada)
         CameraManager.Instance.ReturnToLastCamera(0.5f);
+        CompleteActivity();
         _cupModelToDrink.SetActive(false);
         PlayerActionBlocker.Instance.UnblockAll();
         _cupModelToTake.SetActive(false);
-        CompleteActivity();
+        
     }
 }
