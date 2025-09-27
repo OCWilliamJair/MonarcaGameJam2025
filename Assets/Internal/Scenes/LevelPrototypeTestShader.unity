@@ -1241,7 +1241,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &382377749
 Transform:
   m_ObjectHideFlags: 0
@@ -8399,8 +8399,10 @@ GameObject:
   - component: {fileID: 311182070389281241}
   - component: {fileID: 5386575052221791159}
   - component: {fileID: 327064008795062643}
+  - component: {fileID: 5386575052221791161}
+  - component: {fileID: 5386575052221791160}
   m_Layer: 0
-  m_Name: Cube.014
+  m_Name: BED
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13150,6 +13152,39 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502877291889488782}
   m_Mesh: {fileID: -2865104911859505335, guid: a9c213e3d08f86848ba38773aecc165f, type: 3}
+--- !u!320 &5386575052221791160
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502877291889488782}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: e62708d4b1c723449ae03167663b890d, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings: []
+  m_ExposedReferences:
+    m_References: []
+--- !u!114 &5386575052221791161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502877291889488782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f3be918601bb148a0eeb3be1d6e4cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRenderer: {fileID: 327064008795062643}
+  outlineMaterial: {fileID: 2100000, guid: 4acdb99ffe59b8141a6dec62e0ef93c3, type: 2}
+  canInteract: 0
+  _timeLineController: {fileID: 5386575052221791160}
 --- !u!23 &5425505346817709064
 MeshRenderer:
   m_ObjectHideFlags: 0
