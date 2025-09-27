@@ -9,13 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeb2d9e8223f1c64c8c76c1fab39d7ee, type: 3}
-  m_Name: alarm_clock
+  m_Script: {fileID: 11500000, guid: d6fa2d92fc1b3f34da284357edf89c3b, type: 3}
+  m_Name: ChangeScene
   m_EditorClassIdentifier: 
-  soundName: alarm_clock
-  clip: {fileID: 8300000, guid: 4543cded2ca639746ada05e8b54e0ac5, type: 3}
-  volume: 1
-  pitch: 1
-  loop: 1
-  spatialBlend: 1
-  category: SFX
