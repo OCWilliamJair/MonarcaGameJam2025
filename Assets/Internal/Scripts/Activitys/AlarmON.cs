@@ -1,16 +1,21 @@
 using UnityEngine;
 
-public class AlarmON : MonoBehaviour
+public class AlarmON : ActivityBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private SoundData _ONSound;
+
+    public override void ActivityProcess()
     {
-        
+        StopAlarm();
+    }
+    void StartAlarm()
+    {
+        AudioManager.Instance.Play(_ONSound.name, transform.position);
     }
 
-    // Update is called once per frame
-    void Update()
+    void StopAlarm()
     {
-        
+        AudioManager.Instance.Stop(_ONSound.name);
+        CompleteActivity();
     }
 }

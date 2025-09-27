@@ -1,16 +1,15 @@
 using UnityEngine;
 
-public class TakeFood : MonoBehaviour
+public class TakeFood : ActivityBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject _food;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] private SoundData _takeFoodSound;
+
+    public override void ActivityProcess()
     {
-        
+        _food.SetActive(true);
+        AudioManager.Instance.Play(_takeFoodSound.name);
+        CompleteActivity();
     }
 }

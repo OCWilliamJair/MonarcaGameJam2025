@@ -1,37 +1,31 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerBlink : MonoBehaviour
 {
-    public Material blinkMaterial;
+    [Header("Material del Shader FullScreen")]
+    [SerializeField] private Material blinkMaterial;
 
-    [Header("Duraciones")]
-    public float closeTime = 0.15f;
-    public float stayClosedTime = 0.05f;
-    public float openTime = 0.2f;
+    [Header("Tiempos del parpadeo (segundos)")]
+    [SerializeField] private float closeDuration = 0.08f; 
+    [SerializeField] private float holdDuration = 0.05f;  
+    [SerializeField] private float openDuration = 0.15f;  
 
-    private void Start()
-    {
-        blinkMaterial.SetFloat("_Blink", 0f);
+
+    void Update()
+    {      
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Blink().Forget();
+        }
     }
 
-    public void Blink()
+    async UniTask Blink()
     {
-        Sequence seq = DOTween.Sequence();
-
-        // Cierre
-        seq.Append(DOTween.To(
-            () => blinkMaterial.GetFloat("_Blink"),
-            x => blinkMaterial.SetFloat("_Blink", x),
-            1f, closeTime));
-
-        // Tiempo cerrado
-        seq.AppendInterval(stayClosedTime);
-
-        // Apertura
-        seq.Append(DOTween.To(
-            () => blinkMaterial.GetFloat("_Blink"),
-            x => blinkMaterial.SetFloat("_Blink", x),
-            0f, openTime));
+        blinkMaterial.DOFloat(0.4f, "_BlinkProgress", closeDuration);
+        await UniTask.Delay(2000);
+        blinkMaterial.DOFloat(1f, "_BlinkProgress", openDuration);
     }
 }
