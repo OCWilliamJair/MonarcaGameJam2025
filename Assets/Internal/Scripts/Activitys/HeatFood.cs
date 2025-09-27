@@ -1,16 +1,30 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class HeatFood : MonoBehaviour
+public class HeatFood : ActivityBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private GameObject foodToHeat;
+
+    [SerializeField] private SoundData microWaveStartSound;
+
+    [SerializeField] private SoundData microWaveProcessSound;
+
+    [SerializeField] private SoundData microWaveReadySound;
+
+
+    public override void ActivityProcess()
     {
-        
+        MicrowaveRoutine().Forget();
     }
 
-    // Update is called once per frame
-    void Update()
+    async UniTask MicrowaveRoutine()
     {
-        
+        AudioManager.Instance.Play(microWaveStartSound.name, transform.position);
+        await UniTask.Delay(1000);
+        foodToHeat.SetActive(false);
+        AudioManager.Instance.Play(microWaveProcessSound.name, transform.position);
+        await UniTask.Delay(10000);
+        AudioManager.Instance.Play(microWaveReadySound.name, transform.position);
+        CompleteActivity();
     }
 }

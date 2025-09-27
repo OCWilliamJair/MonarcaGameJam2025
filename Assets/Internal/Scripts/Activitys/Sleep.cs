@@ -1,16 +1,11 @@
 using UnityEngine;
+using UnityEngine.Playables;
 
-public class Sleep : MonoBehaviour
+public class Sleep : InteractableBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private PlayableDirector _timeLineController;
+    public override void Interact()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        _timeLineController.Play();
     }
 }
