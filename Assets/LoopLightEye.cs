@@ -9,27 +9,34 @@ public class LoopLightEye : MonoBehaviour
     public float maxIntensity = 2f;
     public float duration = 1f;
 
-    [SerializeField] GameObject player;
+    private Tween pulseTween;
 
     private void Start()
     {
         if (targetLight != null)
         {
-            // Forzamos el valor inicial al mínimo
-            targetLight.intensity = minIntensity;
-            PulseLight();
+            targetLight.intensity = minIntensity;           
         }
     }
 
-    private void PulseLight()
+    public void PulseLight()
     {
-        targetLight.DOIntensity(maxIntensity, duration)
+        pulseTween = targetLight.DOIntensity(maxIntensity, duration)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine);
     }
 
-    private void Update()
+    public void StopPulse(bool resetToMin = true)
     {
-        transform.LookAt(player.transform);
+        if (pulseTween != null && pulseTween.IsActive())
+        {
+            pulseTween.Kill();
+        }
+
+        if (targetLight != null && resetToMin)
+        {
+            targetLight.intensity = minIntensity;
+        }
     }
+
 }

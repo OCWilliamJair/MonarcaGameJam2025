@@ -8,7 +8,9 @@ public class OnPC : ActivityBase
 
     [SerializeField] private SoundData pcStarted;
 
-    [SerializeField] private GameObject ledPC;
+    [SerializeField] private GameObject ledPCON;
+
+    [SerializeField] private GameObject ledPCOFF;
 
     [SerializeField] private GameObject DesktopCanvasPC;
     public override void ActivityProcess()
@@ -21,13 +23,14 @@ public class OnPC : ActivityBase
     {
         base.RestartValues();
         DesktopCanvasPC.SetActive(false);
-        ledPC.SetActive(false);
+        ledPCON.SetActive(false);
     }
 
     async UniTask StartedPCRoutine()
     {
         AudioManager.Instance.Play(buttonSound.name, transform.position);
-        ledPC.SetActive(true);
+        ledPCOFF.SetActive(false);
+        ledPCON.SetActive(true);
         await UniTask.Delay(8000);
         AudioManager.Instance.Play(pcStarted.name, transform.position);
         DesktopCanvasPC.SetActive(true);

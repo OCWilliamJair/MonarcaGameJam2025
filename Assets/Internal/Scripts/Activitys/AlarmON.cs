@@ -8,12 +8,12 @@ public class AlarmON : ActivityBase
     {
         StopAlarm();
     }
-    void StartAlarm()
+    public void StartAlarm()
     {
         AudioManager.Instance.Play(_ONSound.name, transform.position);
     }
 
-    void StopAlarm()
+    public void StopAlarm()
     {
         AudioManager.Instance.Stop(_ONSound.name);
         CompleteActivity();

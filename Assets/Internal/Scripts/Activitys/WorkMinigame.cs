@@ -21,6 +21,7 @@ public class WorkMinigame : ActivityBase
     [SerializeField] private GameObject MainCanvas;
     [SerializeField] private GameObject retryCanvas;
     [SerializeField] private GameObject WorkingComplete;
+    [SerializeField] private GameObject DesktopCanvas;
     public Image emailDisplay;
     public TextMeshProUGUI labelText;
     public TextMeshProUGUI feedbackText;
@@ -101,6 +102,7 @@ public class WorkMinigame : ActivityBase
 
     private async UniTask RunGame()
     {
+        DesktopCanvas.SetActive(false);
         CameraManager.Instance.SwitchCamera(_camera, true, 0.5f);
         PlayerActionBlocker.Instance.BlockAll();
         await UniTask.Delay(2000);
@@ -182,6 +184,7 @@ public class WorkMinigame : ActivityBase
                 await UniTask.Delay(500);
                 PlayerActionBlocker.Instance.UnblockAll();
                 gameIsStarted = false;
+                DesktopCanvas.SetActive(true);
                 CompleteActivity();
             }
         }

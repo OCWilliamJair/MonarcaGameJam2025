@@ -9,6 +9,8 @@ public class OffPC : ActivityBase
 
     [SerializeField] private GameObject ledPCOff;
 
+    [SerializeField] private GameObject ledPCON;
+
     [SerializeField] private GameObject DesktopCanvasPC;
     public override void ActivityProcess()
     {
@@ -27,8 +29,9 @@ public class OffPC : ActivityBase
     {
         AudioManager.Instance.Play(buttonSound.name, transform.position);
         ledPCOff.SetActive(true);
+        ledPCON.SetActive(false);
         await UniTask.Delay(2000);
-        AudioManager.Instance.Play(ledPCOff.name, transform.position);
+        AudioManager.Instance.Play(pcOff.name, transform.position);
         DesktopCanvasPC.SetActive(false);
         CompleteActivity();
     }
