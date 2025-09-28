@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Video;
 
 [RequireComponent(typeof(VideoPlayer))]
@@ -21,6 +22,9 @@ public class PlayVideo : MonoBehaviour
 
     private int currentPlays = 0;
     private bool infiniteLoop = false;
+
+    [SerializeField] private UnityEvent OnStart;
+    [SerializeField] private UnityEvent OnEnd;
 
     private void Start()
     {
@@ -44,6 +48,7 @@ public class PlayVideo : MonoBehaviour
             quadMaterial.SetTexture("_BaseMap", videoTexture);
             videoPlayer.Play();
             AudioManager.Instance.Play(_sound.name, transform.position);
+            OnStart.Invoke();
         }
     }
 
@@ -61,6 +66,7 @@ public class PlayVideo : MonoBehaviour
             {
                 quadMaterial.SetTexture("_BaseMap", baseImage);
                 AudioManager.Instance.Stop(_sound.name);
+                OnEnd.Invoke();
             }
         }
     }
