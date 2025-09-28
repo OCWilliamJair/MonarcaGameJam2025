@@ -2539,7 +2539,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 621299892}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: ce38e360071b19c4fa76d00246340c9e, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: c17514e5c5b74b443b07e959007353b4, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -4528,18 +4528,6 @@ MonoBehaviour:
   OnCompleteActivity:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5252682846106986202}
-        m_TargetAssemblyTypeName: AlarmON, Assembly-CSharp
-        m_MethodName: StartAlarm
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 8894691113081265605}
         m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
         m_MethodName: set_enabled
@@ -4944,8 +4932,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Priority:
-    Enabled: 1
-    m_Value: 11
+    Enabled: 0
+    m_Value: 0
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -9276,7 +9264,6 @@ Transform:
   - {fileID: 1771266951279118761}
   - {fileID: 2114071028654718779}
   - {fileID: 6286393608273328533}
-  - {fileID: 666369314333640416}
   - {fileID: 154533593}
   - {fileID: 1933282971}
   - {fileID: 3089292269962963027}
@@ -9398,21 +9385,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 941851319686119899}
   m_CullTransparentMesh: 1
---- !u!4 &666369314333640416
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1574869080600641772}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 1.093, y: 4.4463477, z: -6.354604}
-  m_LocalScale: {x: 7.6553173, y: 47.42239, z: 47.42239}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 543450653217031466}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &671717966023685382
 GameObject:
   m_ObjectHideFlags: 0
@@ -9856,51 +9828,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!23 &976723960368190119
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1574869080600641772}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 9d8153a6c91712b449ffb67b0528e406, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1048724835534730189
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -10046,7 +9973,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1187514422386943105
 Transform:
   m_ObjectHideFlags: 0
@@ -10505,24 +10432,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &1574869080600641772
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 666369314333640416}
-  - component: {fileID: 3418485910772369676}
-  - component: {fileID: 976723960368190119}
-  m_Layer: 0
-  m_Name: Cube.044
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1582813067053888163
 GameObject:
   m_ObjectHideFlags: 0
@@ -11814,14 +11723,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8485173161835005113}
   m_Mesh: {fileID: -5741174448488666723, guid: a9c213e3d08f86848ba38773aecc165f, type: 3}
---- !u!33 &3418485910772369676
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1574869080600641772}
-  m_Mesh: {fileID: 3925360246919112806, guid: a9c213e3d08f86848ba38773aecc165f, type: 3}
 --- !u!33 &3441275452841857695
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -13518,6 +13419,7 @@ GameObject:
   - component: {fileID: 5252682846106986202}
   - component: {fileID: 5252682846106986203}
   - component: {fileID: 5252682846106986204}
+  - component: {fileID: 5252682846106986205}
   m_Layer: 6
   m_Name: Alarma
   m_TagString: Untagged
@@ -13539,7 +13441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRenderer: {fileID: 3859947755330521533}
   outlineMaterial: {fileID: 2100000, guid: 4acdb99ffe59b8141a6dec62e0ef93c3, type: 2}
-  canInteract: 1
+  canInteract: 0
   activityDescription: 
   dayEvents: []
   OnStartActivity:
@@ -13608,30 +13510,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5252682846106986204}
-        m_TargetAssemblyTypeName: LoopLightEye, Assembly-CSharp
-        m_MethodName: StopPulse
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 621299893}
-        m_TargetAssemblyTypeName: PlayVideo, Assembly-CSharp
-        m_MethodName: PlayVideoClip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   _ONSound: {fileID: 11400000, guid: 1af9ef309125bb14db9babdf5097c180, type: 2}
 --- !u!65 &5252682846106986203
 BoxCollider:
@@ -13670,6 +13548,20 @@ MonoBehaviour:
   minIntensity: 0
   maxIntensity: 5
   duration: 0.5
+--- !u!114 &5252682846106986205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252682846106986201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f958b935478c6a940bfcf7badacd6366, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogue: {fileID: 11400000, guid: edaf7c8c416790747aa3eba3e20afe5a, type: 2}
+  blockAction: 0
 --- !u!23 &5266249845664754864
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13904,9 +13796,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f3be918601bb148a0eeb3be1d6e4cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRenderer: {fileID: 327064008795062643}
+  targetRenderer: {fileID: 6027543245820444469}
   outlineMaterial: {fileID: 2100000, guid: 4acdb99ffe59b8141a6dec62e0ef93c3, type: 2}
-  canInteract: 1
+  canInteract: 0
   activityDescription: 
   dayEvents: []
   OnStartActivity:
