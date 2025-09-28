@@ -14,7 +14,6 @@ public class FadeScreen : MonoBehaviour
         {
             // Asegurar que el panel esté visible al inicio (si lo necesitas)
             fadePanel.raycastTarget = false;
-            FadeIn();
         }
     }
 

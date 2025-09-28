@@ -17,6 +17,10 @@ public class EmailData
 
 public class WorkMinigame : ActivityBase
 {
+    [SerializeField] private SoundData _hitSound;
+
+    [SerializeField] private SoundData _correctSound;
+
     [Header("UI Elements")]
     [SerializeField] private GameObject MainCanvas;
     [SerializeField] private GameObject retryCanvas;

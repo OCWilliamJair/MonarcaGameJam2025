@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,12 +9,18 @@ public class DayEvent
     public UnityEvent onInteract; 
 }
 
+[RequireComponent(typeof(DialogueContainer))]
 public abstract class ActivityBase : InteractableBase
 {
     [SerializeField] public string activityDescription;
 
+    [SerializeField] public bool showDialoguestart;
+
+    [SerializeField] public bool showDialogueComplete;
+
     [Header("Configuración de días")]
     [SerializeField] protected DayEvent[] dayEvents;
+    private DialogueContainer dialogueContainer;
 
 
     [Header("events")]
@@ -24,6 +31,7 @@ public abstract class ActivityBase : InteractableBase
     protected override void Awake()
     {
         base.Awake();
+        dialogueContainer = GetComponent<DialogueContainer>();
         DayManager.OnCompleteDay += RestartValues;
     }
 
@@ -31,6 +39,10 @@ public abstract class ActivityBase : InteractableBase
     {
         SetInteract(true);
         OnStartActivity.Invoke();
+        if (showDialoguestart)
+        {
+            dialogueContainer.StarDialogue();
+        }
     }
 
     public override void Interact()
@@ -44,9 +56,15 @@ public abstract class ActivityBase : InteractableBase
     public virtual void CompleteActivity()
     {
         int currentDay = DayManager.Instance.currentDay;
-        ChooseDayEvent(currentDay);
+        ChooseDayEvent(currentDay);        
         OnCompleteActivity.Invoke();
+
+        if (showDialogueComplete)
+        {
+            dialogueContainer.CompleteDialogue();
+        }
     }
+
 
     /// <summary>
     /// Ejecuta el evento correspondiente al día
