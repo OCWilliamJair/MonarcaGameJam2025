@@ -287,7 +287,7 @@ public class ChillMinigame : ActivityBase
         gameRunning = false;
         isDashing = false;
         dashOnCooldown = false;
-        statusText.text = "Reintentando...";
+        statusText.text = "";
     }
 
     private async UniTaskVoid Dash(Vector3 direction)

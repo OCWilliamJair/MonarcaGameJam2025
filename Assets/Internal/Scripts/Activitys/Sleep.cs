@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Video;
 
 public class Sleep : ActivityBase
 {
@@ -11,9 +12,17 @@ public class Sleep : ActivityBase
 
     [SerializeField] private SceneChanger _sceneManager;
 
-    private VideoFinal _video;
+    [SerializeField] private VideoPlayer _video;
 
     [SerializeField] private bool isChangeScene = true;
+
+    private void Start()
+    {
+        if(_video != null)
+        {
+            _video.loopPointReached += ChangeSceneAfterVideo;
+        }      
+    }
     public override void ActivityProcess()
     {
         SleepRoutine().Forget();
@@ -26,10 +35,22 @@ public class Sleep : ActivityBase
         _fadeScreen.FadeIn();
         CompleteActivity();
         await UniTask.Delay(4000);
-        _video.LoadAndPlay("final.mp4");        
+
+        if (_video != null)
+        {
+            _fadeScreen.FadeOut();
+            _video.Play();
+        }                     
+        
         if (isChangeScene)
         {
+            await UniTask.Delay(3000);
             _sceneManager.ChangeScene();
         }                
+    }
+
+    public void ChangeSceneAfterVideo(VideoPlayer vp)
+    {
+        _sceneManager.ChangeScene();
     }
 }

@@ -31,7 +31,7 @@ public class CameraManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         camDictionary = new Dictionary<string, CinemachineCamera>();
         foreach (var cam in cameras)

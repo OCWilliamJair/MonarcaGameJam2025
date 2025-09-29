@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AudioManager : Singletons<AudioManager>
+public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance;
+
     [Header("Lista de sonidos disponibles (asignar en el inspector)")]
     public List<SoundData> sounds = new List<SoundData>();
 
@@ -17,7 +19,17 @@ public class AudioManager : Singletons<AudioManager>
     /// <summary>
     /// Reproduce un sonido por su nombre.
     /// </summary>
+    private void Awake()
+    {
 
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+
+    }
     private void Start()
     {
         PlayMusic(_mainMusic.name);

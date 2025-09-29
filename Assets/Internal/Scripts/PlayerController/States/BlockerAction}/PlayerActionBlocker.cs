@@ -23,7 +23,7 @@ public class PlayerActionBlocker : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject); 
+        //DontDestroyOnLoad(gameObject); 
     }
 
     /// <summary>Bloquea una acción específica</summary>

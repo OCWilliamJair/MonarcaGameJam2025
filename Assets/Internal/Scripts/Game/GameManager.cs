@@ -1,10 +1,13 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    [SerializeField] PlayableDirector _director;
 
     private void Awake()
     {
@@ -14,12 +17,19 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject); // Persiste entre escenas
     }
 
     /// <summary>
     /// Carga una escena de forma directa (sin transición).
     /// </summary>
+    /// 
+    private void Start()
+    {
+        if(_director != null)
+        {
+            _director.Play();
+        }
+    }
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);

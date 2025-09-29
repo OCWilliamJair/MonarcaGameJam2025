@@ -5,57 +5,23 @@ using UnityEngine.Video;
 [RequireComponent(typeof(VideoPlayer), typeof(AudioSource))]
 public class VideoFinal : MonoBehaviour
 {
+    [SerializeField] private string videoFileName = "miVideo.mp4";
+    [SerializeField] private Camera mainCamera;
+
     private VideoPlayer videoPlayer;
 
-    private SceneChanger sceneChanger;
-    void Awake()
+    void Start()
     {
         videoPlayer = GetComponent<VideoPlayer>();
-        sceneChanger = GetComponent<SceneChanger>();    
 
-        // Configuración básica
-        videoPlayer.playOnAwake = false;
-        videoPlayer.renderMode = VideoRenderMode.CameraNearPlane; // Pantalla completa
-        videoPlayer.targetCamera = Camera.main;
-
-        // Configuración de audio
-        videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
-        videoPlayer.SetTargetAudioSource(0, GetComponent<AudioSource>());
-
-        
-    }
-
-    private void OnEnable()
-    {
-        videoPlayer.loopPointReached += RestartGame;
-    }
-
-    private void OnDisable()
-    {
-        videoPlayer.loopPointReached -= RestartGame;
-    }
-
-    public void LoadAndPlay(string videoFileName)
-    {
         string path = System.IO.Path.Combine(Application.streamingAssetsPath, videoFileName);
+        videoPlayer.source = VideoSource.Url;
         videoPlayer.url = path;
 
-        videoPlayer.prepareCompleted += OnPrepared;
-        videoPlayer.Prepare();
-    }
+        // Mostrar en cámara
+        videoPlayer.renderMode = VideoRenderMode.CameraNearPlane;
+        videoPlayer.targetCamera = mainCamera;
 
-    private void OnPrepared(VideoPlayer vp)
-    {
-        vp.prepareCompleted -= OnPrepared; // evitar dobles llamadas
-        vp.Play();
-    }
-
-    public void StopVideo() => videoPlayer.Stop();
-    public void PauseVideo() => videoPlayer.Pause();
-    public void ResumeVideo() => videoPlayer.Play();
-
-    public void RestartGame(VideoPlayer vp)
-    {
-        sceneChanger.ChangeScene();
+        videoPlayer.Play();
     }
 }

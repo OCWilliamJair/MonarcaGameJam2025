@@ -9,11 +9,14 @@ EditorBuildSettings:
     path: Assets/Internal/Scenes/LevelPrototype.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/Internal/Scenes/MainMenu.unity
+    guid: 56d18e1ad0204f845b10ab975b8b88b2
+  - enabled: 1
     path: Assets/Internal/Scenes/Day1.unity
     guid: 4d96725de52c66d43b0c18e49178f42e
   - enabled: 1
     path: Assets/Internal/Scenes/Day2.unity
-    guid: 3daf6d8a37881fb488b4abbf7cea9e17
+    guid: aaa8fdf37479de6489fbf7a043822e03
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
