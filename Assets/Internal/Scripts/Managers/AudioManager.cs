@@ -12,9 +12,16 @@ public class AudioManager : Singletons<AudioManager>
     [Header("Mixer principal de Audio (Opcional)")]
     public AudioMixerGroup defaultMixer;
 
+    [SerializeField] private SoundData _mainMusic;
+
     /// <summary>
     /// Reproduce un sonido por su nombre.
     /// </summary>
+
+    private void Start()
+    {
+        PlayMusic(_mainMusic.name);
+    }
     public void Play(string soundName, Vector3? position = null)
     {
         if (activeSounds.ContainsKey(soundName))

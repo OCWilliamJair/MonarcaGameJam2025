@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundName: ambience_1
   clip: {fileID: 8300000, guid: d177f309370a2054aa8604f3218bc1b5, type: 3}
-  volume: 1
+  volume: 0.5
   pitch: 1
-  loop: 0
-  spatialBlend: 0
-  category: SFX
+  loop: 1
+  spatialBlend: 1
+  category: "M\xFAsica"

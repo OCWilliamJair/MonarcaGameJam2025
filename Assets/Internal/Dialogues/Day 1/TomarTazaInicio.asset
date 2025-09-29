@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "El caf\xE9\u2026 mi salvaci\xF3n de cada d\xEDa. \xBFDonde habre dejado
-      mi taza?"
+    text: "Bien, parece que est\xE1 algo sucia, deber\xEDa ir a lavarla."

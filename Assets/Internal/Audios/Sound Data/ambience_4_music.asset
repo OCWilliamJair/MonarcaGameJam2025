@@ -16,6 +16,6 @@ MonoBehaviour:
   clip: {fileID: 8300000, guid: 95ca1f99e59c5f040b2e35dea04f0c87, type: 3}
   volume: 1
   pitch: 1
-  loop: 0
+  loop: 1
   spatialBlend: 0
   category: SFX
