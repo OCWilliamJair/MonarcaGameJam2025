@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "Perfecto\u2026 aunque siento que nunca me despierta del todo. Bueno es
-      hora de trabajar"
+    text: "No sabe a caf\xE9\u2026 sabe a ceniza. Ir\xE9 al ordenador, quiz\xE1 me
+      distraiga."
   - speakerName: 
-    text: "Primero tendr\xE9 que despertar a mi compa\xF1era favorita. Bueno... y
-      \xFAnica tambi\xE9n."
+    text: "No dejo de escuchar ruidos extra\xF1os..."

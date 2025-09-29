@@ -14,8 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "Por fin silencio\u2026 aunque siempre queda un eco en mis o\xEDdos."
-  - speakerName: 
-    text: "\xBFD\xF3nde habr\xE9 dejado mi taza?"
-  - speakerName: 
-    text: "Me gusta la oscuridad, pero quiz\xE1 deba encender las luces"
+    text: "\xBFQue carajos fue eso?, habia algo viendome.... adem\xE1s, la alarma
+      suena antes del amanecer\u2026 no deber\xEDa. Necesito caf\xE9 antes de que
+      me vuelva loco."

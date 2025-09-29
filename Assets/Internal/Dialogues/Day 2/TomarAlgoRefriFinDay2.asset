@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "Perfecto, parece que sigue en bues estado, deber\xEDa calentarla primero"
+    text: "Esto no es comida\u2026 es carne cruda. Tengo que meterla al microondas."

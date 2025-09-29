@@ -10,6 +10,10 @@ public class Sleep : ActivityBase
     [SerializeField] private FadeScreen _fadeScreen;
 
     [SerializeField] private SceneChanger _sceneManager;
+
+    private VideoFinal _video;
+
+    [SerializeField] private bool isChangeScene = true;
     public override void ActivityProcess()
     {
         SleepRoutine().Forget();
@@ -22,6 +26,10 @@ public class Sleep : ActivityBase
         _fadeScreen.FadeIn();
         CompleteActivity();
         await UniTask.Delay(4000);
-        _sceneManager.ChangeScene();
+        _video.LoadAndPlay("final.mp4");        
+        if (isChangeScene)
+        {
+            _sceneManager.ChangeScene();
+        }                
     }
 }

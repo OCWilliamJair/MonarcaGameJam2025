@@ -9,10 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1995adf3a295464ca80e0be11515039, type: 3}
-  m_Name: HacerSuChambaFinDay2
+  m_Script: {fileID: 11500000, guid: aeb2d9e8223f1c64c8c76c1fab39d7ee, type: 3}
+  m_Name: Susurro_2
   m_EditorClassIdentifier: 
-  lines:
-  - speakerName: 
-    text: "No controlo mis manos\u2026 escriben te veo. Necesito salir de aqu\xED,
-      aunque sea a la cocina."
+  soundName: Susurro_2
+  clip: {fileID: 8300000, guid: 4e8fd975e02c2a747ab1aae1ad087747, type: 3}
+  volume: 1
+  pitch: 1
+  loop: 0
+  spatialBlend: 1
+  category: SFX

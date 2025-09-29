@@ -6,91 +6,90 @@ using UnityEngine;
 [RequireComponent(typeof(Light))]
 public class LightEffectsUniTask : MonoBehaviour
 {
-    private Light targetLight;
+    private Light _light;
+    private bool canTurnOn = true;
     private Tween currentTween;
-    private CancellationTokenSource cts;
-
-    [Header("Configuración base")]
-    public float defaultIntensity = 1f;
-    public Color defaultColor = Color.white;
 
     private void Awake()
     {
-        targetLight = GetComponent<Light>();
-        targetLight.intensity = defaultIntensity;
-        targetLight.color = defaultColor;
+        _light = GetComponent<Light>();
     }
 
-    private void StopAllEffects()
+    public void TurnOff()
     {
-        cts?.Cancel();
-        cts = new CancellationTokenSource();
-
-        // Cancelar tween activo
-        if (currentTween != null && currentTween.IsActive())
-            currentTween.Kill();
+        currentTween?.Kill();
+        _light.enabled = false;
     }
 
-    public void ChangeToRed(float duration = 0.5f)
+    public void TurnOn()
     {
-        StopAllEffects();
-        currentTween = targetLight.DOColor(Color.red, duration);
+        if (!canTurnOn) return;
+        _light.enabled = true;
     }
 
-    public void ResetLight(float duration = 0.5f)
+    public void SetLock(bool value)
     {
-        StopAllEffects();
-        Sequence s = DOTween.Sequence();
-        s.Append(targetLight.DOColor(defaultColor, duration));
-        s.Join(targetLight.DOIntensity(defaultIntensity, duration));
-        currentTween = s;
+        canTurnOn = !value;
     }
 
-    public void StartFlicker(float minInterval = 0.05f, float maxInterval = 0.3f)
+    public void SetColor(Color color)
     {
-        StopAllEffects();
-        FlickerLoop(minInterval, maxInterval, cts.Token).Forget();
+        _light.color = color;
     }
 
-    private async UniTaskVoid FlickerLoop(float minInterval, float maxInterval, CancellationToken token)
+    public void flick()
     {
-        while (!token.IsCancellationRequested)
+        Flicker();
+    }
+
+    public void flickIrregular()
+    {
+        IrregularFlick();
+    }
+    public async void Flicker(float minIntensity = 0f, float maxIntensity = 3f, float duration = 0.1f, float totalTime = 6f)
+    {
+        if (!_light.enabled) _light.enabled = true;
+
+        float elapsed = 0f;
+
+        while (elapsed < totalTime)
         {
-            targetLight.enabled = !targetLight.enabled;
-            float delay = Random.Range(minInterval, maxInterval);
-            await UniTask.Delay(System.TimeSpan.FromSeconds(delay), cancellationToken: token);
+            _light.intensity = Random.Range(minIntensity, maxIntensity);
+            await UniTask.Delay((int)(duration * 1000));
+            elapsed += duration;
         }
+
+        _light.intensity = maxIntensity;
     }
 
-    public void StartColorCycle(float duration = 1f)
+    public void Pulse(float pulseIntensity = 4f, float pulseDuration = 0.2f, int loops = 10)
     {
-        StopAllEffects();
-        ColorCycleLoop(duration, cts.Token).Forget();
+        currentTween?.Kill();
+        _light.enabled = true;
+        currentTween = _light.DOIntensity(_light.intensity * pulseIntensity, pulseDuration)
+                              .SetLoops(loops * 2, LoopType.Yoyo);
     }
 
-    private async UniTaskVoid ColorCycleLoop(float duration, CancellationToken token)
+    public void IrregularFlick(float minIntensity = 0f, float maxIntensity = 2f, float durationMin = 0.05f, float durationMax = 0.3f, int loops = 30)
     {
-        while (!token.IsCancellationRequested)
+        currentTween?.Kill();
+        _light.enabled = true;
+
+        Sequence seq = DOTween.Sequence();
+        for (int i = 0; i < loops; i++)
         {
-            Color randomColor = Random.ColorHSV();
-            targetLight.DOColor(randomColor, duration);
-            await UniTask.Delay(System.TimeSpan.FromSeconds(duration), cancellationToken: token);
+            float targetIntensity = Random.Range(minIntensity, maxIntensity);
+            float dur = Random.Range(durationMin, durationMax);
+            seq.Append(_light.DOIntensity(targetIntensity, dur));
         }
+        seq.OnComplete(() => _light.intensity = maxIntensity);
+        currentTween = seq;
     }
 
-    public void StartBreathing(float minIntensity = 0.5f, float maxIntensity = 2f, float duration = 2f)
+    public void TurnRed(float duration = 0.5f)
     {
-        StopAllEffects();
-        currentTween = targetLight.DOIntensity(maxIntensity, duration)
-            .SetLoops(-1, LoopType.Yoyo)
-            .SetEase(Ease.InOutSine);
-    }
-
-
-    public void FadeOut(float duration = 2f)
-    {
-        StopAllEffects();
-        currentTween = targetLight.DOIntensity(0f, duration)
-            .OnComplete(() => targetLight.enabled = false);
+        currentTween?.Kill();
+        _light.enabled = true;
+        currentTween = _light.DOColor(Color.red, duration);
     }
 }

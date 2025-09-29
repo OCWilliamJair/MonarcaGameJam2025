@@ -14,8 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "Perfecto\u2026 aunque no tiene tanto sabor como deber\xEDa."
-  - speakerName: 
-    text: "Llego mi hora favorita del d\xEDa, es hora de jugaaar."
-  - speakerName: 
-    text: "Probar\xE9 ese nuevo juego que compre en una p\xE1gina random de internet."
+    text: "El olor\u2026 es hierro. Mejor distraerme con ese maldito juego."

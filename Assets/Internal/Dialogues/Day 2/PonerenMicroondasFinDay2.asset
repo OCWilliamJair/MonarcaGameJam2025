@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "No me gusta para nada el ruido del microondas, deber\xEDa tener un bot\xF3n
-      para silenciarlo."
+    text: "Ese zumbido\u2026 parece un lamento. Debo sacarlo ya."

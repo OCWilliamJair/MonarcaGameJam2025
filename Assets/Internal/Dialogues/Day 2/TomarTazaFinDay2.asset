@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "Bien, parece que est\xE1 algo sucia, deber\xEDa ir a lavarla."
+    text: "... No puedo creerlo, \xBFQu\xE9 est\xE1 pasando? \xBFQue fue ese ruido?"
+  - speakerName: 
+    text: Debo calmarme un poco
+  - speakerName: 
+    text: "La mancha no se va de la taza\u2026 parece sangre seca. Debo lavarla."

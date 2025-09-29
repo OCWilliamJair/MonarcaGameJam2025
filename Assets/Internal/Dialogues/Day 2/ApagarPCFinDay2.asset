@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "Todo listo para dormir y terminar otro d\xEDa igual..."
+    text: "No juego yo\u2026 me juegan a m\xED. Debo apagarla antes de que me consuma..."
+  - speakerName: 
+    text: "Durmiendo, esoooo, definitivamente esto es un sue\xF1o, si duermo todo
+      pasar\xE1"

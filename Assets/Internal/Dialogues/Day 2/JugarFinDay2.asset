@@ -14,7 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "Interesante ese juego\u2026 no es lo que esperaba y me incomodaba un poco
-      jugarlo, pero da igual, quiz\xE1 deba ir a dormir."
-  - speakerName: 
-    text: "Pero antes que nada debo despedirme de mi compa\xF1era."
+    text: "Ese juego nuevo\u2026 nunca recuerdo instalarlo. Cada vez que lo juego
+      me siento m\xE1s incomodo."

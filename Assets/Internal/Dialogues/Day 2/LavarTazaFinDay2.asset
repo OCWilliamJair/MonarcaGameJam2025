@@ -14,7 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: 
-    text: "Es rid\xEDculo lavar algo que volver\xE9 a ensuciar en un minuto\u2026
-      pero bueno."
-  - speakerName: 
-    text: "Ver\xE9 si la maldita cafetera sigue funcionando"
+    text: "El agua se ve un poco rara, quiz\xE1 deba llamar a un fontanero"

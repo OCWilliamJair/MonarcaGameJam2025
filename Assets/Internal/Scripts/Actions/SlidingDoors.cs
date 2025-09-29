@@ -58,7 +58,7 @@ public class SlidingDoors : InteractableBase
         AudioManager.Instance.Play(_sound.name, transform.position);
     }
 
-    private async UniTaskVoid CloseDoor()
+    public async UniTaskVoid CloseDoor()
     {
         if (currentTween != null && currentTween.IsActive()) currentTween.Kill();
 
@@ -67,5 +67,10 @@ public class SlidingDoors : InteractableBase
         await UniTask.CompletedTask;
 
         AudioManager.Instance.Play(_sound.name, transform.position);
+    }
+
+    public void close()
+    {
+        CloseDoor().Forget();
     }
 }
